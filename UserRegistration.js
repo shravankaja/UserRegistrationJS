@@ -23,11 +23,11 @@ function testPattern(str, pattern) {
 function check(name, pattern) {
   let result = testPattern(name, pattern);
   if (result == true) {
-    console.log("Entered name is correct");
+    console.log("Validated");
     return true;
   }
   else if (result == false) {
-    console.log("Please enter correct name");
+    console.log("Please follow format");
     return false;
   }
 }
@@ -43,6 +43,7 @@ let validate = function (str, patternToCheck) {
     setTimeout(() => {
       let nameCheck = read(str)
       result = check(nameCheck, patternToCheck);
+      if (result == true) resolve('done')
       while (result == false) {
         nameCheck = read(str)
         result = check(nameCheck, patternToCheck);
@@ -50,15 +51,13 @@ let validate = function (str, patternToCheck) {
           resolve('done')
           break;
         }
-
       }
-
     }, 100)
-
   });
 }
 
-validate("Enter first name :",FirstNamePattern).then(()=>validate("Enter last name :",LASTNAMEPATTERN))
+validate("Enter first name :", FirstNamePattern).then(() => validate("Enter last name :", LASTNAMEPATTERN)).then(
+  () => validate("Enter email :", EMAILPATTERN))
 
 
 
