@@ -57,7 +57,7 @@ let validate = function (str, patternToCheck) {
 }
 
 validate("Enter first name :", FirstNamePattern).then(() => validate("Enter last name :", LASTNAMEPATTERN)).then(
-  () => validate("Enter email :", EMAILPATTERN))
+  () => validate("Enter email :", EMAILPATTERN)).then(()=> validate("Enter phone number :",PHONEPATTERN))
 
 
 
