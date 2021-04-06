@@ -1,64 +1,41 @@
 console.log("Welcome To User Registration");
 
 const prompt = require('prompt-sync')()
-
+const utils = require('./utils')
 const readline = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
 });
-
-let FirstNamePattern = "^[A-Z][a-zA-Z]{2,}$";
-let LASTNAMEPATTERN = "^[A-Z][a-zA-Z]{2,}$";
-let EMAILPATTERN = "^[a-zA-z0-9]{1,}([\\.\\_\\+\\-])?[a-zA-Z0-9]{0,}@[a-zA-z0-9]{1,}\\.[a-z]{2,3}(\\.)?([a-z]{2,3})?";
-let PHONEPATTERN = "^[9][1][0-9]{10}$";
-let PASSWORDPATTERN = "^(?=.{8,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*])(?!.*[!@#$%^&*].*[!@#$%^&*]).*$";
+const t = require('./Constants');
 
 
-function testPattern(str, pattern) {
-  var patt = new RegExp(pattern);
-  var res = patt.test(str);
-  return res;
-}
-
-function check(name, pattern) {
-  let result = testPattern(name, pattern);
-  if (result == true) {
-    console.log("Validated");
-    return true;
-  }
-  else if (result == false) {
-    console.log("Please follow format");
-    return false;
-  }
-}
-
-let read = function (str) {
-  let value = prompt(str)
-  return value;
-}
 
 let validate = function (str, patternToCheck) {
   return new Promise((resolve, reject) => {
     let result;
     setTimeout(() => {
-      let nameCheck = read(str)
-      result = check(nameCheck, patternToCheck);
-      if (result == true) resolve('done')
+      let nameCheck = utils.read(str, prompt)
+      result = utils.check(nameCheck, patternToCheck)
+      if (result == true) return resolve('true')
       while (result == false) {
-        nameCheck = read(str)
-        result = check(nameCheck, patternToCheck);
+        nameCheck = utils.read(str, prompt)
+        result = utils.check(nameCheck, patternToCheck)
         if (result == true) {
-          resolve('done')
+          return resolve('true')
           break;
         }
       }
-    }, 100)
+    }, 1000)
   });
 }
 
-validate("Enter first name :", FirstNamePattern).then(() => validate("Enter last name :", LASTNAMEPATTERN)).then(
-  () => validate("Enter email :", EMAILPATTERN)).then(() => validate("Enter phone number :", PHONEPATTERN)).then(() =>
-    validate("Enter Password :", PASSWORDPATTERN))
+let print = function (str) {
+  console.log(str);
+}
+
+validate("Enter first name :", t.FirstNamePattern).then(() => validate("Enter last name :", t.LASTNAMEPATTERN)).then(
+() => validate("Enter email :", t.EMAILPATTERN)).then(() => validate("Enter phone number :", t.PHONEPATTERN)).then(() =>
+validate("Enter Password :", t.PASSWORDPATTERN)).then(() => print("All fields are validated")).catch(function () { console.log("The error is handled, continue normally"); })
 
 
 
